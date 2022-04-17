@@ -1,0 +1,91 @@
+---
+title: "Finding the Best Markets to Advertise In"
+author: "Abe Ceasar Perez"
+date: "April 11, 2022"
+output: html_document
+---
+
+### Advertising an E-learning Platform
+
+This project aims to find out the two best markets to advertise our product in. Specifically, we'll be using the dataquest survey datasets in order to determine which of the top countries should we advertise for this platform.
+
+In addition to the objectives above, we'll be applying the following concepts in this project:
+
+- Summary Statistics
+- Frequency Distribution Tables
+
+### Initial Findings
+
+Based on the outcome of the project, we determined that both Canada and India were found to be the best marketplaces to advertise the Dataquest platform
+
+To understand how the results were obtained, the process is outlined below:
+
+### Loading the Data
+
+We'll first be loading our 2017 survey data obtained from freeCodeCamp. The link to the survey can be found here: <https://github.com/freeCodeCamp/2017-new-coder-survey/tree/master/clean-data>
+
+```{r load_data, echo=TRUE, warning=FALSE}
+
+# loads the master package without additional messages
+suppressPackageStartupMessages(library(tidyverse))
+
+df <- read_csv("2017-fCC-New-Coders-Survey-Data.csv", show_col_types=FALSE) # loads the dataset without printing the column names
+head(df) # displays the first few rows 
+
+```
+
+### Identifying the Coders' Countries
+
+Next, we'll be looking into the countries where the coder/purchaser resides. Based on the list below, we have identified over 162 countries excluding the blank fields.
+
+```{r determine_countries, echo=TRUE, warning=FALSE}
+
+countries <- df %>% select(CountryLive) %>% unique # selects all the unique country names
+head(countries)
+
+```
+
+To check the representativeness of the results, we'll also be displaying the number of coders per country using a frequency distribution table which is illustrated below:
+
+```{r countries_by_freq, echo=TRUE, warning=FALSE}
+
+coders <- df %>% group_by(CountryLive) %>% summarize(Freq = n()) %>% arrange(-Freq) # tabulates the number of coders per country
+head(coders)
+
+```
+
+### Which are the Best Markets to Advertise In?
+
+We have identified four possible countries to use in our analysis: US, India, United Kingdom, and Canada. Not only do they have the most number of coders but they also have the highest number of English-speakers, which is beneficial for the usage of the platform.
+
+```{r top_countries, echo=TRUE, warning=FALSE}
+
+top_4_countries <- df %>% filter(CountryLive %in% c('United States of America', 'India', 'United Kingdom', 'Canada')) %>% select(CountryLive, MoneyForLearning, MonthsProgramming) # tabulate the top 4 countries for coders as well as the money spent for programming
+
+top_4_countries
+
+```
+
+Lastly, we'll be computing the spend per month for each country. For this analysis, we'll only be considering coders that have spent and have programmed for at least one month in order to obtain the proportion of money spent per country:
+
+```{r spend_per_month, echo=TRUE, warning=FALSE}
+
+top_4_countries <- top_4_countries %>% 
+  filter(!(is.na(MoneyForLearning)) &
+           MoneyForLearning != 0  & 
+           MonthsProgramming != 0) # retains only purchases that were either made or programming that have lasted for 1 month or more 
+
+
+spend_per_month <- top_4_countries %>% 
+  group_by(CountryLive) %>% 
+  summarize(money_spent = sum(MoneyForLearning)/sum(MonthsProgramming))
+# calculates the overall spend per month
+
+```
+
+### Conclusion
+
+The aim of this project is to find the top two markets to advertise our e-marketing platform. Based on the results above we have determined the United States and Canada to be the best markets to advertise due to the number of purchases made.
+
+<br>
+<br>
