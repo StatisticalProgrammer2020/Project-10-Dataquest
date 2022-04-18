@@ -1,7 +1,6 @@
 ---
 title: "Finding the Best Markets to Advertise In"
 author: "Abe Ceasar Perez"
-date: "April 11, 2022"
 output: html_document
 ---
 
@@ -9,7 +8,7 @@ output: html_document
 
 This project aims to find out the two best markets to advertise our product in. Specifically, we'll be using the dataquest survey datasets in order to determine which of the top countries should we advertise for this platform.
 
-In addition to the objectives above, we'll be applying the following concepts in this project:
+For this project, the following concepts were applied in order to accomplish the objectives above:
 
 - Summary Statistics
 - Frequency Distribution Tables
